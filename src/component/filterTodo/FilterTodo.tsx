@@ -1,17 +1,23 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import * as React from "react";
+import { setActiveFilterCreator } from "../../store/todoReducer";
+import { useAppDispatch, useAppSelector } from "../../store/reduxHooks";
+
 import "./filterTodo.scss";
 import type { FilterType } from "../app/App";
 
-type Props = {
-  onFilter: (value: FilterType) => void;
-  activeFilter: FilterType;
-};
+export default function FilterTodo(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const { activeFilter } = useAppSelector((state) => state.todos);
 
-export default function FilterTodo({
-  onFilter,
-  activeFilter,
-}: Props): JSX.Element {
+  const setFilter = (valueFilter: FilterType) => {
+    if (valueFilter === activeFilter) return;
+    dispatch(setActiveFilterCreator(valueFilter));
+  };
+
+  const onChangeFilerInput = (valueFilter: FilterType) => {
+    setFilter(valueFilter);
+  };
+
   return (
     <fieldset className="filterTodo__wrapper">
       <legend>Выберите задачи для просмотра</legend>
@@ -22,7 +28,7 @@ export default function FilterTodo({
           id="completed"
           name="todoFilter"
           value="complete"
-          onChange={(e) => onFilter(e.target.value as FilterType)}
+          onChange={(e) => onChangeFilerInput(e.target.value as FilterType)}
         />
         <label htmlFor="completed">выполненные задачи</label>
       </div>
@@ -33,7 +39,7 @@ export default function FilterTodo({
           id="uncompleted"
           name="todoFilter"
           value="unComplete"
-          onChange={(e) => onFilter(e.target.value as FilterType)}
+          onChange={(e) => onChangeFilerInput(e.target.value as FilterType)}
         />
         <label htmlFor="uncompleted">НЕ выполненные задачи</label>
       </div>
@@ -44,7 +50,7 @@ export default function FilterTodo({
           id="all"
           name="todoFilter"
           value="all"
-          onChange={(e) => onFilter(e.target.value as FilterType)}
+          onChange={(e) => onChangeFilerInput(e.target.value as FilterType)}
         />
         <label htmlFor="all">ВСЕ задачи</label>
       </div>

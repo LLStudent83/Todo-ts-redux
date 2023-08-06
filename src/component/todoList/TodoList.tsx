@@ -1,27 +1,33 @@
 /* eslint-disable import/no-cycle */
-import React from 'react';
-import TodoItem from '../todoItem/TodoItem';
-import { TodoType } from '../app/App';
-import './todoList.scss';
+import React from "react";
+import TodoItem from "../todoItem/TodoItem";
+import { useAppSelector } from "../../store/reduxHooks";
+import { FilterType } from "../app/App";
+import { TodoType } from "../../store/todoReducer";
+import "./todoList.scss";
 
-type Props = {
-  todos: Array<TodoType>
-  onToggle: (id: string) => void
-};
+function TodoList(): JSX.Element {
+  const { todos, activeFilter } = useAppSelector((state) => state.todos);
 
-function TodoList(props: Props): JSX.Element {
-  const { todos, onToggle } = props;
-  const visibleTodos: Array<TodoType> = todos.filter((todo) => todo.visible);
+  // const visibleTodos: Array<TodoType> = todos.filter((todo) => todo.visible);
+
+  function getVisibleTodo(value: FilterType): TodoType[] {
+    if (value === "all") {
+      return todos;
+    }
+    if (value === "unComplete") {
+      return todos.filter((todo) => todo.completed === false);
+    }
+    if (value === "complete") {
+      return todos.filter((todo) => todo.completed === true);
+    }
+    return todos;
+  }
 
   return (
     <ul className="todoList__list">
-      {visibleTodos.map((todo, index) => (
-        <TodoItem
-          todo={todo}
-          key={todo.id}
-          index={index}
-          onChange={onToggle}
-        />
+      {getVisibleTodo(activeFilter).map((todo, index) => (
+        <TodoItem todo={todo} key={todo.id} index={index} />
       ))}
     </ul>
   );

@@ -1,5 +1,6 @@
-/* eslint-disable import/no-cycle */
 import * as React from "react";
+import { toDoCompletedCreator, delTodoCreator } from "../../store/todoReducer";
+import { useAppDispatch } from "../../store/reduxHooks";
 import { TodoType } from "../app/App";
 
 import "./todoItem.scss";
@@ -7,14 +8,32 @@ import "./todoItem.scss";
 type Props = {
   todo: TodoType;
   index: number;
-  onChange: (id: string) => void;
 };
 
-function TodoItem({ todo, index, onChange }: Props): JSX.Element {
+function TodoItem({ todo, index }: Props): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const classes = ["todoItem__todoTitle"];
   if (todo.completed) {
     classes.push("todoItem__done");
   }
+
+  const toDoCompleted = (toDoId: string) => {
+    dispatch(toDoCompletedCreator(toDoId));
+  };
+
+  const deleteTodo = (todoId: string) => {
+    dispatch(delTodoCreator(todoId));
+  };
+
+  const onChange = (toDoId: string) => {
+    toDoCompleted(toDoId);
+  };
+
+  const handlerClickDelTodo = (todoId: string) => {
+    deleteTodo(todoId);
+  };
+
   return (
     <li className="todoItem__item">
       <input
@@ -29,7 +48,7 @@ function TodoItem({ todo, index, onChange }: Props): JSX.Element {
       <button
         type="button"
         className="todoItem__deleteTodo"
-        // onClick={() => memoRemoveTodo(todo.id)}
+        onClick={() => handlerClickDelTodo(todo.id)}
       >
         &times;
       </button>
