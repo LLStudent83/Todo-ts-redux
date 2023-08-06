@@ -25,11 +25,14 @@ function TodoList(): JSX.Element {
   }
 
   return (
-    <ul className="todoList__list">
-      {getVisibleTodo(activeFilter).map((todo, index) => (
-        <TodoItem todo={todo} key={todo.id} index={index} />
-      ))}
-    </ul>
+    <>
+      <ul className="todoList__list">
+        {getVisibleTodo(activeFilter).map((todo, index) => (
+          <TodoItem todo={todo} key={todo.id} index={index} />
+        ))}
+      </ul>
+      {todos.length === 0 && <p>No todo</p>}
+    </>
   );
 }
 

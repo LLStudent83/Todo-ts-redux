@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 import "./addTodo.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addTodoCreator } from "../../store/todoReducer";
 import { nanoid } from "nanoid";
 
