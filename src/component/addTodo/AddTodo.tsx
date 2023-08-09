@@ -32,6 +32,8 @@ function AddTodo(): JSX.Element {
   return (
     <form className="addTodo_form" onSubmit={submitHendler}>
       <input
+        placeholder="Напишите сюда задание"
+        aria-label="addTodoInput"
         type="text"
         value={stateInput}
         onChange={(e) => hendleChangeInput(e.target.value)}
